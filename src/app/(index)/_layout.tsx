@@ -29,6 +29,13 @@ export default function Layout() {
           headerLargeTitle: true,
         }}
       />
+      <Stack.Screen
+        name="flight/[id]"
+        options={{
+          title: "Flight Details",
+          headerLargeTitle: false,
+        }}
+      />
     </Stack>
   );
 }

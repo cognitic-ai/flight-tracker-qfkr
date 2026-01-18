@@ -1,6 +1,6 @@
 import * as AC from "@bacons/apple-colors";
 import { View, Text, Pressable } from "react-native";
-import { useState } from "react";
+import { Link } from "expo-router";
 
 export interface Flight {
   id: string;
@@ -23,7 +23,6 @@ export interface Flight {
 }
 
 export default function FlightCard({ flight }: { flight: Flight }) {
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const getStatusColor = () => {
     switch (flight.status) {
@@ -49,21 +48,21 @@ export default function FlightCard({ flight }: { flight: Flight }) {
   };
 
   return (
-    <Pressable
-      onPress={() => setIsExpanded(!isExpanded)}
-      style={({ pressed }) => ({
-        backgroundColor: AC.secondarySystemBackground,
-        borderRadius: 16,
-        borderCurve: "continuous",
-        padding: 16,
-        gap: 12,
-        opacity: pressed ? 0.7 : 1,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-      })}
-    >
+    <Link href={`/flight/${flight.id}`} asChild>
+      <Pressable
+        style={({ pressed }) => ({
+          backgroundColor: AC.secondarySystemBackground,
+          borderRadius: 16,
+          borderCurve: "continuous",
+          padding: 16,
+          gap: 12,
+          opacity: pressed ? 0.7 : 1,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 8,
+        })}
+      >
       {/* Header */}
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <View style={{ gap: 4 }}>
@@ -181,42 +180,7 @@ export default function FlightCard({ flight }: { flight: Flight }) {
         </View>
       </View>
 
-      {/* Expanded Details */}
-      {isExpanded && (
-        <View
-          style={{
-            borderTopWidth: 1,
-            borderTopColor: AC.separator,
-            paddingTop: 12,
-            gap: 8,
-          }}
-        >
-          {flight.departure.gate && (
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ color: AC.secondaryLabel, fontSize: 14 }}>Departure Gate</Text>
-              <Text style={{ color: AC.label, fontSize: 14, fontWeight: "600" }}>
-                {flight.departure.gate}
-              </Text>
-            </View>
-          )}
-          {flight.arrival.gate && (
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ color: AC.secondaryLabel, fontSize: 14 }}>Arrival Gate</Text>
-              <Text style={{ color: AC.label, fontSize: 14, fontWeight: "600" }}>
-                {flight.arrival.gate}
-              </Text>
-            </View>
-          )}
-          {flight.aircraft && (
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ color: AC.secondaryLabel, fontSize: 14 }}>Aircraft</Text>
-              <Text style={{ color: AC.label, fontSize: 14, fontWeight: "600" }}>
-                {flight.aircraft}
-              </Text>
-            </View>
-          )}
-        </View>
-      )}
-    </Pressable>
+      </Pressable>
+    </Link>
   );
 }
